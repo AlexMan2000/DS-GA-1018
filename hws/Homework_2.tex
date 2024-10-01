@@ -1,0 +1,109 @@
+\documentclass[11pt]{article}
+
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{theorem}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{hyperref}
+\usepackage{changepage} 
+
+% \newtheorem{problem}{Problem}
+\newcounter{problem}
+\newenvironment{problem}[2][]{\refstepcounter{problem}\par\medskip
+   \noindent \textbf{Problem \theproblem~(#2 points):}}{\vspace{1cm}}
+\newcounter{subproblem}[problem]
+\renewcommand{\thesubproblem}{\roman{subproblem}}
+\newenvironment{subproblem}[2][]{\refstepcounter{subproblem}\par\medskip
+\begin{adjustwidth}{\parindent}{}
+   \textbf{\thesubproblem. (#2 points):}}{\end{adjustwidth}}
+\begin{document}
+
+\title{DS-GA 1018: Homework 2}
+\author{Due Monday October 15\textsuperscript{th} at 5:00 pm}
+\date{}
+
+\maketitle
+
+\begin{problem}{20} Consider a causal AR(2) process of the form:
+\begin{align}
+    X_t = \phi_2 X_{t-2} + W_t,
+\end{align}
+with $0 < \phi_2 < 1$ and $W_t \sim \mathcal{N}(0, \sigma_w^2)$.
+\begin{subproblem}{6}
+    Assume that we have observations $\{x_1,x_2\}$. Derive the mean and variance of a future observation $x_t$ with $t>2$. (\textit{Hint: you'll need your solutions from Problem 4 of Homework 1.})
+\end{subproblem}
+\begin{subproblem}{2}
+    What is the mean for $t=3$ and $t=4$. Explain the intuition behind this result.
+\end{subproblem}
+\begin{subproblem}{2}
+    What is the covariance for $t=3$ and $t=4$. Explain the intuition behind this result.
+\end{subproblem}
+\begin{subproblem}{2}
+   What is the mean and variance of $x_t$ as $t \to \infty$? Explain the intuition behind this result.
+\end{subproblem}
+\begin{subproblem}{6}
+    Assume that we have observations $x_1$. Derive the mean vector and covariance matrix of a future set of observations $\{x_t, x_{t+1}\}$ with $t>1$.
+\end{subproblem}
+\begin{subproblem}{2}
+   What is the mean vector and covariance matrix of $\{x_t,x_{t+1}\}$ for $t=2$? Explain the intuition behind this result.
+\end{subproblem}
+\end{problem}
+
+\newpage
+
+\begin{problem}{10} Consider the generalization of ARCH(1) model given by:
+    \begin{align}
+    R_t &= \delta + Y_t \\
+    Y_t &= \sigma_t W_t, \quad W_t \sim N(0, 1) \\
+    \sigma_t^2 &= \alpha_0 + \alpha_1 Y_{t-1}^2,
+    \end{align}
+    where $\alpha_0 > 0$, $1 > \alpha_1 > 0$, and $\delta$ is a constant value.
+
+    \begin{subproblem}{2} Derive the mean $\mu_{R_t}$.
+    \end{subproblem}
+    
+    \begin{subproblem}{6} Derive the  covariance $\gamma_{R_t, R_{t+h}}$.
+    \end{subproblem}
+    
+    \begin{subproblem}{2} Is $R_t$ a (weak) stationary process? Justify your answer quantitatively.
+    \end{subproblem}
+
+\end{problem}
+
+\begin{problem}{10}\label{prob:sigma_lim}
+    Consider the latent space model we presented in class defined by:
+    \begin{align}
+        \mathbf{z}_t &= \mathbf{A} \mathbf{z}_{t-1} + \mathbf{w}_t \\
+        \mathbf{x}_t &= \mathbf{C} \mathbf{z}_{t} + \mathbf{v}_{t}
+    \end{align}
+    where the latent space $\mathbf{z}$ is has dimension $d$ and the data $\mathbf{x}$ has dimension $n$. Our noise is being drawn from $\mathbf{w}_t \sim \mathcal{N}(0,\mathbf{Q})$ and $\mathbf{v}_t \sim \mathcal{N}(0,\mathbf{R})$.
+    \begin{subproblem}{4}
+       Assume that, $n=d$ and that we have $C = \alpha \mathbb{I}$ and $R = \sigma_v^2 \mathbb{I}$. Write the mean $\mu_{t|t} = \mu_{\mathbf{z}_t|\mathbf{z}_{t-1},\mathbf{x}_t}$ and covariance $\Sigma_{t|t}$ in terms of the mean $\mu_{t|t-1} = \mu_{\mathbf{z}_t|\mathbf{z}_{t-1}}$ and covariance $\Sigma_{t|t-1}$. Simplify as much as possible.
+    \end{subproblem}
+    \begin{subproblem}{2}
+       What happens in the limit $\sigma_v \to 0$? Demonstrate the answer quantitatively and explain the intuition behind this limit.
+    \end{subproblem}
+    \begin{subproblem}{2}
+       What happens in the limit $\sigma_v \to \infty$? Demonstrate the answer quantitatively and explain the intuition behind this limit.
+    \end{subproblem}
+    \begin{subproblem}{2}
+       What happens in the limit $\alpha \to 0$? Demonstrate the answer quantitatively and explain the intuition behind this limit.
+    \end{subproblem}
+\end{problem}
+
+\begin{problem}{5}
+    Consider a modified version of our latent space model that depends on a set of \textbf{observed} values $\mathbf{y}_t$ as follows:
+    \begin{align}
+        \mathbf{z}_t &= \mathbf{A} \mathbf{z}_{t-1} + \mathbf{B} \mathbf{y}_t + \mathbf{w}_t,
+    \end{align}
+    otherwise all the other components are identical to those described in Problem \ref{prob:sigma_lim}.
+    \begin{subproblem}{5}
+        Derive how this new process changes the filtering step of our Kalman filtering.
+    \end{subproblem}
+\end{problem}
+
+\end{document}
