@@ -1,0 +1,82 @@
+\documentclass[11pt]{article}
+
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{theorem}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{hyperref}
+\usepackage{changepage} 
+
+% \newtheorem{problem}{Problem}
+\newcounter{problem}
+\newenvironment{problem}[2][]{\refstepcounter{problem}\par\medskip
+   \noindent \textbf{Problem \theproblem~(#2 points):}}{\vspace{1cm}}
+\newcounter{subproblem}[problem]
+\renewcommand{\thesubproblem}{\roman{subproblem}}
+\newenvironment{subproblem}[2][]{\refstepcounter{subproblem}\par\medskip
+\begin{adjustwidth}{\parindent}{}
+   \textbf{\thesubproblem. (#2 points):}}{\end{adjustwidth}}
+\begin{document}
+
+\title{DS-GA 1018: Homework 3}
+\author{Due Monday October 28\textsuperscript{th} at 5:00 pm}
+\date{}
+
+\maketitle
+
+\begin{problem}{19}\label{prob:sigma_lim}
+    Consider the latent space model we presented in class defined by:
+    \begin{align}
+        \mathbf{z}_t &= \mathbf{A} \mathbf{z}_{t-1} + \mathbf{w}_t \\
+        \mathbf{x}_t &= \mathbf{C} \mathbf{z}_{t} + \mathbf{v}_{t}
+    \end{align}
+    where the latent space $\mathbf{z}$ is has dimension $d$ and the data $\mathbf{x}$ has dimension $n$. Our noise is being drawn from $\mathbf{w}_t \sim \mathcal{N}(0,\mathbf{Q})$ and $\mathbf{v}_t \sim \mathcal{N}(0,\mathbf{R})$. Assume that $n=d$ and that we have $\pmb{A} = \mathbb{I}$, $\pmb{C} = \mathbb{I}$, and $\pmb{Q} = 0 \cdot  \mathbb{I}$. Finally, assume that $\pmb{\Sigma}_0 \to \infty$. We make no specific assumption for $\pmb{R}$ or $\pmb{\mu}_0$. We want to show that the smoothed mean $\pmb{\mu}_{t|T}$ simplifies to the mean of the data $\frac{1}{T} \sum_{i=1}^T \pmb{x}_i$. This problem will walk you through the steps:
+    \begin{subproblem}{5}
+        Show that $\pmb{\mu}_{1|1} = \pmb{x}_1$ and $\pmb{\Sigma}_{1|1} = \pmb{R}$. You will need to take the limit $\pmb{\Sigma}_0 \to \infty$. \textit{Hint: it will be useful to know that $(\mathbb{I} + \pmb{M})^{-1} = \sum_{i=0}^\infty (-1)^i \pmb{M}^i$, where $\pmb{M}$ is an arbitrary matrix.}
+    \end{subproblem}
+    \begin{subproblem}{2}
+        Explain the intuition behind the result for $\pmb{\mu}_{1|1}$ and $\pmb{\Sigma}_{1|1}$.
+    \end{subproblem}
+    \begin{subproblem}{4}
+        Assume that $\pmb{\mu}_{t-1|t-1} = \frac{1}{t-1} \sum_{i=1}^{t-1} \pmb{x}_i$ and that $\pmb{\Sigma}_{t-1|t-1} = \frac{1}{t-1} \pmb{R}$ (this is consistent with your previous result). Show that $\pmb{\mu}_{t|t} = \frac{1}{t} \sum_{i=1}^{t} \pmb{x}_i$ and that $\pmb{\Sigma}_{t|t} = \frac{1}{t} \pmb{R}$.
+    \end{subproblem}
+    \begin{subproblem}{6}
+        Finally, show that $\pmb{\mu}_{t|T} = \frac{1}{T} \sum_{i=0}^T \pmb{x}_i$ and $\pmb{\Sigma}_{t|T} = \frac{1}{T} \pmb{R}$ for all $t$.
+    \end{subproblem}
+    \begin{subproblem}{2}
+        Explain the intuition behind the final result.
+    \end{subproblem}
+\end{problem}
+
+\newpage
+
+\begin{problem}{20} In lecture we discussed the importance of the initial parameter values for the results of the expectation-maximization algorithm. In this problem we will quantitatively demonstrate that importance. Consider the EM algorithm for an LDS system like the one in class. Imagine that we have an initial guess for our parameters: 
+\begin{align}
+    \pmb{\theta}_0 = \{ \pmb{\mu}_{0,0}, \pmb{\Sigma}_{0,0}, \pmb{A}_{0}, \pmb{Q}_0, \pmb{C}_0, \pmb{R}_0\}.
+\end{align}
+We have also set our distribution $q_1(\pmb{Z}) = p(\pmb{Z}|\pmb{X},\pmb{\theta}_0)$. In other words, $q_1$ is the distributions set by the Kalman smoothing means and covariances (the standard choice).
+\begin{subproblem}{3}
+    Consider the case where $\pmb{A}_0 = 0 \cdot \mathbb{I}$ and $\pmb{C}_0 = 0 \cdot \mathbb{I}$. what will the value of $\pmb{\mu}_{0,1}$ be in terms of the data in $\pmb{X}$ and the parameters in $\pmb{\theta}_0$? \textit{For all the subproblems, don't forget to consider how our choice of $\pmb{\theta}_0$ affects terms like $\pmb{\mu}_{t|t-1}$.}
+\end{subproblem}
+\begin{subproblem}{3}
+    Still considering the case where $\pmb{A}_0 = 0 \cdot \mathbb{I}$ and $\pmb{C}_0 = 0 \cdot \mathbb{I}$, what will the value of $\pmb{\Sigma}_{0,1}$ be in terms of the data in $\pmb{X}$ and the parameters in $\pmb{\theta}_0$?
+\end{subproblem}
+\begin{subproblem}{4}
+    Still considering the case where $\pmb{A}_0 = 0 \cdot \mathbb{I}$ and $\pmb{C}_0 = 0 \cdot \mathbb{I}$, what will the value of $\pmb{A}_{1}$ be in terms of the data in $\pmb{X}$ and the parameters in $\pmb{\theta}_0$?
+\end{subproblem}
+\begin{subproblem}{4}
+    Still considering the case where $\pmb{A}_0 = 0 \cdot \mathbb{I}$ and $\pmb{C}_0 = 0 \cdot \mathbb{I}$, what will the value of $\pmb{Q}_{1}$ be in terms of the data in $\pmb{X}$ and the parameters in $\pmb{\theta}_0$?
+\end{subproblem}
+\begin{subproblem}{4}
+    Still considering the case where $\pmb{A}_0 = 0 \cdot \mathbb{I}$ and $\pmb{C}_0 = 0 \cdot \mathbb{I}$, what will the value of $\pmb{C}_{1}$ be in terms of the data in $\pmb{X}$ and the parameters in $\pmb{\theta}_0$?
+\end{subproblem}
+\begin{subproblem}{2}
+    Given these results, what is the solution to $\pmb{\mu}_{0,n}$, $\pmb{\Sigma}_{0,n}$, $\pmb{A}_{n}$, $\pmb{C}_{n}$, and $\pmb{Q}_{n}$?
+\end{subproblem}
+\end{problem}
+
+\end{document}
