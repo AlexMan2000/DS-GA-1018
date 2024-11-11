@@ -1,0 +1,82 @@
+\documentclass[11pt]{article}
+
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{theorem}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{hyperref}
+\usepackage{changepage} 
+
+% \newtheorem{problem}{Problem}
+\newcounter{problem}
+\newenvironment{problem}[2][]{\refstepcounter{problem}\par\medskip
+   \noindent \textbf{Problem \theproblem~(#2 points):}}{\vspace{1cm}}
+\newcounter{subproblem}[problem]
+\renewcommand{\thesubproblem}{\roman{subproblem}}
+\newenvironment{subproblem}[2][]{\refstepcounter{subproblem}\par\medskip
+\begin{adjustwidth}{\parindent}{}
+   \textbf{\thesubproblem. (#2 points):}}{\end{adjustwidth}}
+\begin{document}
+
+\title{DS-GA 1018: Homework 4}
+\author{Due Friday November 18\textsuperscript{th} at 5:00 pm}
+\date{}
+
+\maketitle
+
+\begin{problem}{8}\label{prob:em_dhmm_zero}
+    We have shown that the initialization of the EM algorithm limits will determine the final result. We have largely presented this as a limitation of EM, but in this problem we will show that, for discrete Hidden Markov Models, it can be a strength. Imagine that we have an initial guess for our dHMM parameters:
+    \begin{align}
+        \pmb{\theta}_0 = \{ \pmb{\pi}_0, \pmb{A}_0 \}.
+    \end{align}
+    We also have access to our observation probability distribution function $p(\pmb{x}_t|\pmb{z}_t)$. Our goal is to show that if $\pmb{A}_{ij,0} = 0$ then $\pmb{A}_{ij,1} = 0$. Each subproblem will works us through the steps.
+    \begin{subproblem}{3}
+        Assume that $\pmb{A}_{ij,0} = 0$ and that the other values of $\pmb{A}_{jk,0}$ have arbitrary values. Solve for $p(z_{t,i},z_{t+1,j}|\pmb{x}_{1:T})$.
+    \end{subproblem}
+    \begin{subproblem}{3}
+        Assume that $\pmb{A}_{ij,0} = 0$ and that the other values of $\pmb{A}_{mn,0}$ for $m,n \neq i,j$ have arbitrary values. Solve for $\pmb{A}_{ij,1}$.
+    \end{subproblem}
+    \begin{subproblem}{2}
+        What can you say about the solution for $\pmb{A}_{ij,n}$. When might this behavior be considered a benefit of the EM algorithm?
+    \end{subproblem}
+\end{problem}
+
+\begin{problem}{14}\label{prob:em_dhmm_init}
+    Consider a discrete HMM model with $K$ unique classes for the latent state. Imagine that the transition matrix has the form:
+    \begin{align}
+        A_{ij} = \frac{1}{K}.
+    \end{align}
+    Assume that the initial state vector $\pi$ has arbitrary values and that we have access to our observation probability distribution function $p(\pmb{x}_t|\pmb{z}_t)$.
+    \begin{subproblem}{4}
+        For $t>0$, simplify the recursive equation for $\hat{\alpha}(\pmb{z}_t)$ as much as possible.
+    \end{subproblem}
+    \begin{subproblem}{6}
+        For $t<T$, simplify the recursive equation for $\hat{\beta}(\pmb{z}_t)$ as much as possible. \textit{Hint: Start from $t=T-1$ and use that to derive your solution for the remaining $t$. Don't forget your solution to $c_t$.}
+    \end{subproblem}
+    \begin{subproblem}{2}
+        Solve for $p(\pmb{z}_t|\pmb{x}_{1:T})$.
+    \end{subproblem}
+    \begin{subproblem}{2}
+        What is the intuition behind this result? \textit{Hint: the values of $\pmb{A}$ should factor into your argument}.
+    \end{subproblem}
+\end{problem}
+
+\begin{problem}{10} In lecture we showed how we can compose different Gaussian Process kernel to generate a new Gaussian process kernel. When do this composition, we are implicitly stating that, given two kernels $\kappa_1$ and $\kappa_2$ that:
+\begin{align}
+    \kappa_+(\pmb{x}, \pmb{x}') &= \kappa_1(\pmb{x}, \pmb{x}') + \kappa_2(\pmb{x}, \pmb{x}') \\
+    \kappa_\times(\pmb{x}, \pmb{x}') &= \kappa_1(\pmb{x}, \pmb{x}') \times \kappa_2(\pmb{x}, \pmb{x}'),
+\end{align}
+are both valid kernel functions.
+\begin{subproblem}{5}
+    Prove that if $\kappa_1$ and $\kappa_2$ are valid kernel functions, then $\kappa_+$ is a valid kernel function.
+\end{subproblem}
+\begin{subproblem}{5}
+    Prove that if $\kappa_1$ and $\kappa_2$ are valid kernel functions, then $\kappa_\times$ is a valid kernel function.
+\end{subproblem}
+\end{problem}
+
+\end{document}
