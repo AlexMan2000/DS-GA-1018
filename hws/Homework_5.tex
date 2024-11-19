@@ -1,0 +1,94 @@
+\documentclass[11pt]{article}
+
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{theorem}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{hyperref}
+\usepackage{changepage} 
+
+% \newtheorem{problem}{Problem}
+\newcounter{problem}
+\newenvironment{problem}[2][]{\refstepcounter{problem}\par\medskip
+   \noindent \textbf{Problem \theproblem~(#2 points):}}{\vspace{1cm}}
+\newcounter{subproblem}[problem]
+\renewcommand{\thesubproblem}{\roman{subproblem}}
+\newenvironment{subproblem}[2][]{\refstepcounter{subproblem}\par\medskip
+\begin{adjustwidth}{\parindent}{}
+   \textbf{\thesubproblem. (#2 points):}}{\end{adjustwidth}}
+\begin{document}
+
+\title{DS-GA 1018: Homework 5}
+\author{Due Monday December 2\textsuperscript{nd} at 5:00 pm}
+\date{}
+
+\maketitle
+
+\begin{problem}{10}\label{prob:fft_integral}
+    Imagine that we are doing GP regression using the kernel function:
+    \begin{align}
+        \kappa(x,x') = \cos \left( \frac{2 \pi |x-x'|}{P} \right).
+    \end{align}
+    We are also making the default choice for the mean function: $\mu(x) = 0$. We have two observations at $x_1$ and $x_2$ with values $y_1$ and $y_2$. Also assume that:
+    \begin{align}
+        x_2 = x_1 + P.
+    \end{align}
+    Finally, assume that our model includes independent, Gaussian observation noise with variance $\sigma_w^2$. Using this GP and observations, answer the following questions:
+    \begin{subproblem}{5}
+        Derive the mean and variance for a new observation $x_\star$. Write you answer in terms of:
+        \begin{align}
+            k_\star = \kappa(x_\star, x_1).
+        \end{align}
+    \end{subproblem}
+    \begin{subproblem}{2}
+        Now assume that $x_\star = x_1 + 3P$. Substitute in the correct value of $k_\star$ and write the mean and variance prediction for the observation at $x_\star$.
+    \end{subproblem}
+    \begin{subproblem}{3}
+        Still assuming that $x_\star = x_1 + 3P$, take the limit of $\sigma_w \to 0$. What is the new answer for the mean and variance? Explain the intuition behind this result.
+    \end{subproblem}
+\end{problem}
+
+\newpage
+
+\begin{problem}{10}\label{prob:gp_cos}
+    In this problem we will prove a property we took advantage of in class:
+    \begin{align}
+        \int_0^P \left[\sum_{n=0}^\infty A_n \cos \left( \frac{2 \pi n t}{P} \right)\right]  \cos\left( \frac{2 \pi m t}{P} \right) \ dt &= \frac{A_m P}{2} \label{eq:cos_int} \\
+        \int_0^P \left[\sum_{n=0}^\infty B_n \sin \left( \frac{2 \pi n t}{P} \right)\right]  \cos\left( \frac{2 \pi m t}{P} \right) \ dt &= 0 \label{eq:sin_int} ,
+    \end{align}
+    where $m$ is a positive integer.
+    In this problem, we are going to prove these properties.
+    \begin{subproblem}{4}
+        Show that the following integral:
+        \begin{align}
+            \int_0^P \cos \left( \frac{2 \pi n t}{P}\right) \cos\left( \frac{2 \pi m t}{P} \right) \ dt
+        \end{align}
+        gives $\frac{P}{2}$ if $m=n$ and $0$ otherwise. \textit{Hint: Take advantage of the identity $\cos(\alpha)\cos(\beta) = \frac{1}{2}\left(\cos(\alpha + \beta) + \cos(\alpha - \beta) \right)$. Depending on how you solve the problem, you may also need to use l'hopital's rule.}
+    \end{subproblem}
+    \begin{subproblem}{4}
+        Show that the following integral:
+        \begin{align}
+            \int_0^P \sin \left( \frac{2 \pi n t}{P}\right) \cos\left( \frac{2 \pi m t}{P} \right) \ dt
+        \end{align}
+        gives $0$ for all values of $m$. \textit{Hint: Take advantage of the identity $\cos(\alpha)\sin(\beta) = \frac{1}{2}\left(\sin(\alpha + \beta) - \sin(\alpha - \beta) \right)$.}
+    \end{subproblem}
+    \begin{subproblem}{2}
+        Combine the results from the previous two subproblems to derive Equation \ref{eq:cos_int} and Equation \ref{eq:sin_int}.
+    \end{subproblem}
+\end{problem}
+
+\begin{problem}{6}\label{prob:dft}
+    One of the counter-intuitive properties of the Fourier transform is that a signal that is sparse in the time-domain will be dense in the frequency domain. We will show that explicitly in this problem. For each sub-problem, assume we have a sequence of observations $\{X_0, \ldots, X_{T-1}\}$ with the observations evenlt spaced out in time.
+    \begin{subproblem}{2}
+        Assume $X_n = 1$ for some $n$ and $X_t = 0$ for $t \neq n$. What is the discrete Fourier transform of the signal?
+    \end{subproblem}
+    \begin{subproblem}{4}
+        Assume $X_n = 1, X_{T-n} = 1$ for some $n > 0$ and $X_t = 0$ for $t \neq n, T-n$. What is the discrete Fourier transform of the signal? Simplify your answer. \textit{Hint: $\sin(x) = - \sin(-x) = - \sin(2 \pi j - x)$ for any integer $j$. Similarly, $\cos(x) = \cos(-x) = \cos(2 \pi j - x)$ for any integer $j$.}
+    \end{subproblem}
+\end{problem}
+
+\end{document}
